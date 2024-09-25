@@ -4,8 +4,9 @@ import { Ticker as TickerType } from "../utils/types";
 import { getTicker } from "../utils/httpClient";
 import { SignalingManager } from "../utils/SignalingManager";
 
-export const MarketBar = ( market ) => {
-  const [ticker, setTicker] = useState<TickerType | null>(null);
+export const MarketBar = ( {market}) => {  
+  console.log(market);  
+  const [ticker, setTicker] = useState();
   const [curr24hdata, set24hData] = useState({
     currentPrice: "0",
     change24h: "0",
@@ -143,7 +144,7 @@ function Ticker( market ) {
         <div className="flex items-center justify-between flex-row cursor-pointer rounded-lg p-3 hover:opacity-80">
           <div className="flex items-center flex-row gap-2">
             <div className="flex flex-row relative">
-              <p className="font-medium text-sm">{market.replace("_", " / ")}</p>
+              <p className="font-medium text-sm">{market}</p>
             </div>
           </div>
         </div>

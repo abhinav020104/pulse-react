@@ -1,7 +1,7 @@
 import { UTCTimestamp } from "lightweight-charts"; // You can remove this if not needed in the JS version
 import { Ticker } from "./types"; // You can remove this if not needed in the JS version
 
-export const BASE_URL = "wss://pulse-ws-server.codewithabhinav.online";
+export const BASE_URL = "wss://pulse-backend-ws-server.onrender.com";
 
 export class SignalingManager {
     constructor() {

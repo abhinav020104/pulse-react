@@ -1,18 +1,19 @@
-"use client";
+"use client"; // Keep if you're using Next.js; otherwise, remove it
 import { useEffect, useState } from "react";
-import { MarketBar } from "@/app/components/MarketBar";
-import { SwapUI } from "@/app/components/SwapUI";
-import { TradeView } from "@/app/components/TradeView";
-import { Depth } from "@/app/components/depth/Depth";
-import { getTickers } from "@/app/utils/httpClient";
-import { useParams } from "next/navigation";
-import { SignalingManager } from "@/app/utils/SignalingManager";
+import { MarketBar } from "./components/MarketBar";
+import { SwapUI } from "./components/SwapUI";
+import { TradeView } from "./components/TradeView";
+import { Depth } from "./components/depth/Depth";
+import { getTickers } from "./utils/httpClient";
+import { SignalingManager } from "./utils/SignalingManager";
 import toast from "react-hot-toast";
+import { useParams, useNavigate } from "react-router-dom"; // Import from react-router-dom
 
-export default function Page() {
-    const { market } = useParams();
+export default function Trade() {
+    const { market } = useParams(); 
     const [tickers, setTickers] = useState({});
-    const router = useRouter();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchTickers = async () => {
             try {
@@ -46,8 +47,9 @@ export default function Page() {
     }, [market]);
 
     const handleTickerClick = (symbol) => {
-        router.push(`/trade/${symbol}`);
+        navigate(`/trade/${symbol}`); // Use navigate for routing
     };
+
     const subscribeToTicker = (symbol) => {
         SignalingManager.getInstance().sendMessage({
             method: "SUBSCRIBE",
@@ -57,7 +59,6 @@ export default function Page() {
         SignalingManager.getInstance().registerCallback(
             "allTickers",
             (data) => {
-                //@ts-ignore
                 setTickers((prevTickers) => ({
                     ...prevTickers,
                     [data.symbol]: {
@@ -68,34 +69,34 @@ export default function Page() {
             `TICKER-${symbol}`
         );
     };
+
     console.log("Printing tickers");
     console.log(tickers);
+
     return (
         <div className="flex flex-row flex-1 overflow-y-hidden overflow-x-hidden">
             {/* Ticker List */}
             <div className="flex flex-col w-[250px] bg-gray-800 border-r border-gray-700 p-4 shadow-lg rounded-lg">
-    <h2 className="text-xl font-semibold mb-4 text-gray-200 border-b border-gray-600 pb-2 tracking-wider">
-        Market Overview
-    </h2>
-    <ul className="space-y-4">
-        {Object.keys(tickers).map((symbol) => (
-            // @ts-ignore
-            symbol !== market && (
-                <li
-                    key={symbol}
-                    className="flex justify-between items-center bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition-transform duration-300 cursor-pointer transform hover:scale-105 shadow-md"
-                    onClick={() => handleTickerClick(symbol)}
-                >
-                    <span className="text-gray-300 font-medium text-sm tracking-wide">{symbol}</span>
-                    <span className={`text-lg ${tickers[symbol]?.priceChange !== "0" ? 'text-green-400' : 'text-red-400'} font-bold`}>
-                        ${tickers[symbol]?.currentPrice}
-                    </span>
-                </li>
-            )
-        ))}
-    </ul>
-</div>
-
+                <h2 className="text-xl font-semibold mb-4 text-gray-200 border-b border-gray-600 pb-2 tracking-wider">
+                    Market Overview
+                </h2>
+                <ul className="space-y-4">
+                    {Object.keys(tickers).map((symbol) => (
+                        symbol !== market && (
+                            <li
+                                key={symbol}
+                                className="flex justify-between items-center bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition-transform duration-300 cursor-pointer transform hover:scale-105 shadow-md"
+                                onClick={() => handleTickerClick(symbol)}
+                            >
+                                <span className="text-gray-300 font-medium text-sm tracking-wide">{symbol}</span>
+                                <span className={`text-lg ${tickers[symbol]?.priceChange !== "0" ? 'text-green-400' : 'text-red-400'} font-bold`}>
+                                    ${tickers[symbol]?.currentPrice}
+                                </span>
+                            </li>
+                        )
+                    ))}
+                </ul>
+            </div>
 
             <div className="flex flex-col flex-1 overflow-y-hidden">
                 <MarketBar market={market} />

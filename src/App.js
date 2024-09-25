@@ -10,13 +10,14 @@ import axios from 'axios';
 import Holdings from './Holdings';
 import Login from './Login';
 import SignUp from "./Signup"
+import Trade from './Trade';
 function App() {
   const token = localStorage.getItem("token");
   const fetchUser = async() =>{
         try{
             const response = await axios({
                 method:"post",
-                    url:"https://pulse-api-server.codewithabhinav.online/api/v1/auth/getUserDetails",
+                    url:"https://pulse-backend-api-server.onrender.com/api/v1/auth/getUserDetails",
                     data:{
                       token:token
                     }
@@ -40,7 +41,7 @@ function App() {
         <Route path='/holdings' element={<Holdings/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/signup' element={<SignUp/>}></Route>
-        <Route path='/' element={<Home/>}></Route>
+        <Route path='/trade/:market' element={<Trade/>}></Route>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/' element={<Home/>}></Route>

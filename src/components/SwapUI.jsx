@@ -5,7 +5,7 @@ import { userAtom, tokenAtom } from "../store/User";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export function SwapUI(market) {
+export function SwapUI({market}) {
   const [amount, setAmount] = useState("");
   const [activeTab, setActiveTab] = useState("buy");
   const [type, setType] = useState("limit");
@@ -16,7 +16,7 @@ export function SwapUI(market) {
     try {
       const response = await axios({
         method: "post",
-        url: "https://pulse-api-server.codewithabhinav.online/api/v1/auth/getUserDetails",
+        url: "https://pulse-backend-api-server.onrender.com//api/v1/auth/getUserDetails",
         data: {
           token: token,
         },
@@ -51,7 +51,7 @@ export function SwapUI(market) {
       toast.loading("Placing Order");
       const response = await axios({
         method: "post",
-        url: "https://pulse-api-server.codewithabhinav.online/api/v1/order",
+        url: "https://pulse-backend-api-server.onrender.com//api/v1/order",
         data: orderData,
       });
       await fetchUser();

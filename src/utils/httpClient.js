@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BASE_URL = "https://exchange-proxy.100xdevs.com/api/v1";
-const BASE_URL = "https://pulse-api-server.codewithabhinav.online/api/v1";
+const BASE_URL = "https://pulse-backend-api-server.onrender.com/api/v1";
 
 export async function getTicker(market) {
     console.log(market);
